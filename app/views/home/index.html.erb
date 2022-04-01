@@ -1,0 +1,41 @@
+<% if user_signed_in? %>
+  <div class="body-content">
+    <% if @trending_streams.present? %>
+      <h3 class="text-center">Trending Streams</h3>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Stream Name</th>
+            <th>Broadcaster</th>
+            <th>Viewers</th>
+            <th>Language</th>
+            <th>Streaming Started on</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @trending_streams.each do |stream| %>
+            <tr>
+              <td>
+                <%= image_tag(thumbnail_url(stream['thumbnail_url']), size: "50x50") %>
+                <%= stream['game_name'].titleize %>
+                <span class="badge bg-danger"><%= stream['type'].capitalize %></span>
+              </td>
+              <td><%= stream['user_name'] %></td>
+              <td><%= stream['viewer_count'] %></td>
+              <td><%= stream['language'] %></td>
+              <td><%= formated_time(stream['started_at']) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+<% else %>
+  <center>
+    <h3>Hello World</h3>
+    <p>Join us by Sign in/Sign Up</p>
+    <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
+    <%= link_to "Signup", new_user_registration_path, class: "btn btn-primary" %>
+  </center>
+<% end %>

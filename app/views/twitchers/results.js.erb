@@ -1,0 +1,35 @@
+<% if @response&.success? %>
+  <% if @response&.data&.present? %>
+    $('#results').html("<%= j render partial: 'channels', locals: {streams: @streams} %>");
+  <% else %>
+    $('#results').html("<div class='text-center mt-4'>No results found...</div>");
+  <% end %>
+<% else %>
+  $('#results').html("<div class='text-center mt-4 text-primary'>Service is not available at this moment, please try after some time.</div>");
+<% end %>
+
+$("#loading-results").hide();
+
+$('.watch-btn').click(function (e) {
+  // e.preventDefault();
+  // $(".watch-btn").prop('text', 'Generating Preview...');
+  $.ajax({
+    method: "POST",
+    url: "/add_to_history/",
+    data: {
+      search_history : {
+        user_id: <%= current_user.id %>,
+        query: $('#search_term').val(),
+        results: $(this).data('stream'),
+        stream_user_login: $(this).data('user-login')
+      }
+    },
+    success: function(resp) {
+      window.location.href = 'https://www.twitch.tv/' + resp.stream_user_login;
+      // window.location.href = <%= twitch_game_path(@user_login)%>;
+    },
+    error: function(e) {
+      console.log(e);
+    }
+  });
+});

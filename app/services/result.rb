@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+
+class Result
+  attr_reader :data, :errors
+
+  def initialize(data:, errors:)
+    @data = data
+    @errors = errors
+  end
+
+  def success?
+    errors.blank?
+  end
+end

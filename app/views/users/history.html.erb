@@ -1,0 +1,7 @@
+<h2>Watch History</h2>
+
+<div class="card">
+  <div class="card-body">
+    <%= render partial: 'twitchers/channels', locals: { streams: @versions.pluck(:results) } %>
+  </div>
+</div>

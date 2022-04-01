@@ -1,0 +1,35 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Broadcasting Game</th>
+      <th>Name</th>
+      <th>Watch</th>
+      <th>Language</th>
+      <th>Streaming Since</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% streams.each do |stream| %>
+      <% is_live = stream['is_live'] %>
+      <tr>
+        <td>
+          <%= image_tag(thumbnail_url(stream['thumbnail_url']), size: "50x50") %>
+          <%= stream['game_name'] %>
+          <span class="badge bg-danger"><%= 'Live' if is_live %></span>
+          <span class="badge bg-warning"><%= 'In Top 20' if stream['in_top_20'] %></span>
+        </td>
+        <td data-toggle='tooltip' title="<%= stream['title'].titleize %>">
+          <%= truncate(stream['title'].titleize) %>
+        </td>
+        <td>
+          <%#= button_to "Watch", twitch_game_path(stream['user_login']), target: "_blank", class: 'watch-btn', data: {'stream-id' => stream['id']} %>
+           <!-- add_to_history_path(stream: stream), method: 'post', -->
+          <%= link_to "Watch", '', target: "_blank", remote: true, class: 'watch-btn', 'data-user-login' => stream['user_login'], 'data-stream' => JSON(stream) %>
+
+        </td>
+        <td><%= stream['language'] %></td>
+        <td><%= formated_time(stream['started_at']) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
